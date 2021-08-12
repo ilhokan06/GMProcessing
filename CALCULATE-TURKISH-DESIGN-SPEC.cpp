@@ -62,33 +62,76 @@ std::vector<double> FSF1(std::string ST, double Ss_r, double S1_r)
 	double afl_Ss = 0.0; double afu_Ss = 0.0;
 	double afl_S1 = 0.0; double afu_S1 = 0.0;
 	
-	for (int i = 0; i <= (FS_Ss.size()-1); ++i){
-		if ((Ss_r <= FS_Ss[i]) and (i > 0) and (i < FS_Ss.size())){
-			Ss_ind = i; Ss_Sl = FS_Ss[Ss_ind-1]; Ss_Su = FS_Ss[Ss_ind];
-			afl_Ss = FS[ST][Ss_ind-1]; afu_Ss = FS[ST][Ss_ind];
-		} else if ((Ss_r <= FS_Ss[i]) and (i == 0)){
-			Ss_ind = i; Ss_Sl = FS_Ss[Ss_ind]; Ss_Su = FS_Ss[Ss_ind];
-			afl_Ss = FS[ST][Ss_ind]; afu_Ss = FS[ST][Ss_ind];
-		} else if ((Ss_r >= FS_Ss[i]) and (i == (FS_Ss.size()-1))){
-			Ss_ind = i; Ss_Sl = FS_Ss[Ss_ind]; Ss_Su = FS_Ss[Ss_ind];
-			afl_Ss = FS[ST][Ss_ind]; afu_Ss = FS[ST][Ss_ind];
+	if (Ss_r <= 0.25){
+		Ss_Sl = 0.25; Ss_Su = 0.25;
+		afl_Ss = FS[ST][0]; afu_Ss = FS[ST][0];
+	} else if (Ss_r >= 1.5){
+		Ss_Sl = 1.5; Ss_Su = 1.5;
+		afl_Ss = FS[ST][5]; afu_Ss = FS[ST][5];
+	} else if ((Ss_r > 0.25) and (Ss_r < 1.5)){
+		for(int i = 0; i <= 4; ++i){
+			if ((Ss_r >= FS_Ss[i]) and ((Ss_r <= FS_Ss[i+1]))){
+				Ss_Sl = FS_Ss[i]; Ss_Su = FS_Ss[i+1];
+				afl_Ss = FS[ST][i]; afu_Ss = FS[ST][i+1];
+			}
 		}
 	}
 	
-	for (int i = 0; i <= (F1_S1.size()-1); ++i){
-		if ((S1_r <= F1_S1[i]) and (i > 0) and (i < F1_S1.size())){
-			S1_ind = i; S1_Sl = F1_S1[S1_ind-1]; S1_Su = F1_S1[S1_ind];
-			afl_S1 = F1[ST][S1_ind-1]; afu_S1 = F1[ST][S1_ind];
-		} else if ((S1_r <= F1_S1[i]) and (i == 0)){
-			S1_ind = i; S1_Sl = F1_S1[S1_ind]; S1_Su = F1_S1[S1_ind];
-			afl_S1 = F1[ST][S1_ind]; afu_S1 = F1[ST][S1_ind];
-		} else if ((S1_r >= F1_S1[i]) and (i == (F1_S1.size()-1))){
-			S1_ind = i; S1_Sl = F1_S1[S1_ind]; S1_Su = F1_S1[S1_ind];
-			afl_S1 = F1[ST][S1_ind]; afu_S1 = F1[ST][S1_ind];
+	if (S1_r <= 0.1){
+		S1_Sl = 0.1; S1_Su = 0.1;
+		afl_S1 = F1[ST][0]; afu_S1 = F1[ST][0];
+	} else if (S1_r >= 0.6){
+		S1_Sl = 0.6; S1_Su = 0.6;
+		afl_S1 = F1[ST][5]; afu_S1 = F1[ST][5];
+	} else if ((S1_r > 0.1) and (S1_r < 0.6)){
+		for(int i = 0; i <= 4; ++i){
+			if ((S1_r >= F1_S1[i]) and (S1_r <= F1_S1[i+1])){
+				S1_Sl = F1_S1[i]; S1_Su = F1_S1[i+1];
+				afl_S1 = F1[ST][i]; afu_S1 = F1[ST][i+1];
+			}
 		}
 	}
+	
+	//for (int i = 0; i <= (FS_Ss.size()-1); ++i){
+	//	if ((Ss_r <= FS_Ss[i]) and (i > 0) and (i < (FS_Ss.size()-1))){
+	//		Ss_ind = i; Ss_Sl = FS_Ss[Ss_ind-1]; Ss_Su = FS_Ss[Ss_ind];
+	//		afl_Ss = FS[ST][Ss_ind-1]; afu_Ss = FS[ST][Ss_ind];
+	//	} else if ((Ss_r <= FS_Ss[i]) and (i == 0)){
+	//		Ss_ind = i; Ss_Sl = FS_Ss[Ss_ind]; Ss_Su = FS_Ss[Ss_ind];
+	//		afl_Ss = FS[ST][Ss_ind]; afu_Ss = FS[ST][Ss_ind];
+	//	} else if ((Ss_r >= FS_Ss[i]) and (i == (FS_Ss.size()-1))){
+	//		Ss_ind = i; Ss_Sl = FS_Ss[Ss_ind]; Ss_Su = FS_Ss[Ss_ind];
+	//		afl_Ss = FS[ST][Ss_ind]; afu_Ss = FS[ST][Ss_ind];
+	//	}
+	//}
+	
+	//for (int i = 0; i <= (F1_S1.size()-1); ++i){
+	//	if ((S1_r <= F1_S1[i]) and (i > 0) and (i < F1_S1.size())){
+	//		S1_ind = i; S1_Sl = F1_S1[S1_ind-1]; S1_Su = F1_S1[S1_ind];
+	//		afl_S1 = F1[ST][S1_ind-1]; afu_S1 = F1[ST][S1_ind];
+	//	} else if ((S1_r <= F1_S1[i]) and (i == 0)){
+	//		S1_ind = i; S1_Sl = F1_S1[S1_ind]; S1_Su = F1_S1[S1_ind];
+	//		afl_S1 = F1[ST][S1_ind]; afu_S1 = F1[ST][S1_ind];
+	//	} else if ((S1_r >= F1_S1[i]) and (i == (F1_S1.size()-1))){
+	//		S1_ind = i; S1_Sl = F1_S1[S1_ind]; S1_Su = F1_S1[S1_ind];
+	//		afl_S1 = F1[ST][S1_ind]; afu_S1 = F1[ST][S1_ind];
+	//	}
+	//}
 	
 	double afv_Ss = 0.0; double afv_S1 = 0.0;
+	
+	std::cout << "Lower Ss: " << Ss_Sl << std::endl;
+	std::cout << "Upper Ss: " << Ss_Su << std::endl;
+	std::cout << "Lower As: " << afl_Ss << std::endl;
+	std::cout << "Upper As: " << afu_Ss << std::endl;
+	
+	std::cout << "Lower S1: " << S1_Sl << std::endl;
+	std::cout << "Upper S1: " << S1_Su << std::endl;
+	std::cout << "Lower A1: " << afl_S1 << std::endl;
+	std::cout << "Upper A1: " << afu_S1 << std::endl;
+	
+	std::cout << "Ss_r: " << Ss_r << std::endl;
+	std::cout << "S1_r: " << S1_r << std::endl;
 	
 	afv_Ss = interpolate(Ss_Sl, Ss_Su, afl_Ss, afu_Ss, Ss_r);
 	afv_S1 = interpolate(S1_Sl, S1_Su, afl_S1, afu_S1, S1_r);
